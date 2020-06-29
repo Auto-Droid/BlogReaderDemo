@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sourabhkarkal.blogreaderdemo.R
 import com.sourabhkarkal.blogreaderdemo.model.BlogResponseDTO
+import com.sourabhkarkal.blogreaderdemo.utils.FormatterUtils.Companion.formatValue
 import com.sourabhkarkal.blogreaderdemo.utils.OnLoadMoreListener
 
 
@@ -116,9 +117,9 @@ class BlogItemAdapter internal constructor(
             else holder.tvContent.visibility = View.GONE
 
             //Comments
-            holder.tvComments.text = post?.comments.toString()
+            holder.tvComments.text = post?.comments?.toDouble()?.let { "${formatValue(it)} Comments" }
             //Likes
-            holder.tvLikes.text = post?.likes.toString()
+            holder.tvLikes.text = post?.likes?.toDouble()?.let { "${formatValue(it)} Likes" }
         } else (holder as ProgressViewHolder).progressBar.isIndeterminate = true
 
     }

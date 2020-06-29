@@ -23,6 +23,7 @@ class BlogFragment : Fragment() {
     private var blogViewModel: BlogFragmentViewModel? = null
     private var resultAppList = ArrayList<BlogResponseDTO?>()
     private lateinit var adapter: BlogItemAdapter
+    private var page: Int = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,15 +67,7 @@ class BlogFragment : Fragment() {
     }
 
     companion object {
-        var loading: Boolean = false
         const val limit: Int = 10
-        var page: Int = 1
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        page = 1
     }
 
 }

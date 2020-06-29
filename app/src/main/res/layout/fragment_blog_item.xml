@@ -101,14 +101,17 @@
         app:layout_editor_absoluteX="10dp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
+        android:autoLink="web"
         tools:text="Url" />
 
     <TextView
         android:id="@+id/tvLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUrl"
         app:layout_editor_absoluteX="10dp"
         tools:text="10 Likes" />
