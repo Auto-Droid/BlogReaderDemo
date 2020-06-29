@@ -13,13 +13,13 @@ class BlogSubscriberModule {
 
     @AppScope
     @Provides
-    fun provideRepoIntf(blogApi: BlogApi?): BlogApiCall? {
+    fun provideRepoIntf(blogApi: BlogApi?): BlogApiCall {
         return BlogApiImpl(blogApi)
     }
 
     @AppScope
     @Provides
-    fun provideBlogCallerApi(retrofit: Retrofit): BlogApi? {
+    fun provideBlogCallerApi(retrofit: Retrofit): BlogApi {
         return retrofit.create<BlogApi>(BlogApi::class.java)
     }
 

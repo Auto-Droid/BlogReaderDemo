@@ -5,10 +5,10 @@ import com.sourabhkarkal.blogreaderdemo.repo.network.BlogApi
 import io.reactivex.Single
 import javax.inject.Inject
 
-class BlogApiImpl @Inject constructor(blogApi: BlogApi?) : BlogApiCall {
+class BlogApiImpl @Inject constructor(private val blogApi: BlogApi?) : BlogApiCall {
 
-    override fun getBlogApiResponse(): Single<BlogResponseDTO?>? {
-        TODO("Not yet implemented")
+    override fun getBlogApiResponse(page: String, limit: String): Single<List<BlogResponseDTO>>? {
+        return blogApi?.requestBlogApi(page = page, limit = limit)
     }
 
 

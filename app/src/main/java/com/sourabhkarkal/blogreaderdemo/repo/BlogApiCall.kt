@@ -6,5 +6,5 @@ import retrofit2.Call
 
 interface BlogApiCall {
 
-    fun getBlogApiResponse(): Single<BlogResponseDTO?>?
+    fun getBlogApiResponse(page: String, limit: String): Single<List<BlogResponseDTO>>?
 }

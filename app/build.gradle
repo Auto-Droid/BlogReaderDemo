@@ -49,5 +49,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$rootProject.androidArchLib"
     implementation "android.arch.lifecycle:viewmodel:$rootProject.androidArchLib"
     implementation "android.arch.lifecycle:livedata:$rootProject.androidArchLib"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
 }
