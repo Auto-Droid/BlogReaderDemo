@@ -1,4 +1,4 @@
-package com.sourabhkarkal.blogreaderdemo.scope
+package com.sourabhkarkal.blogreaderdemo.di.scope
 
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
