@@ -8,6 +8,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [NetworkModule::class, ThreadModule::class])
 interface NetworkComponent {
-    fun retrofit(): Retrofit?
-    fun scheduler(): Scheduler?
+    fun retrofit(): Retrofit
+    fun scheduler(): Scheduler
 }

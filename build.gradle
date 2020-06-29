@@ -32,6 +32,6 @@ ext {
     rxJava = '2.2.0'
     rxAndroid = '2.1.0'
     retrofit = '2.5.0'
-
+    androidArchLib = '1.1.0'
 
 }
