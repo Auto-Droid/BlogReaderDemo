@@ -5,62 +5,121 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sourabhkarkal.blogreaderdemo.R
 import com.sourabhkarkal.blogreaderdemo.model.BlogResponseDTO
+import com.sourabhkarkal.blogreaderdemo.utils.OnLoadMoreListener
+
 
 class BlogItemAdapter internal constructor(
-    private var blogList: ArrayList<BlogResponseDTO>,
-    var activity: Activity
+    private var blogList: ArrayList<BlogResponseDTO?>,
+    var activity: Activity, var recyclerView: RecyclerView
 ) :
-    RecyclerView.Adapter<BlogItemAdapter.BlogViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.fragment_blog_item, parent, false)
-        return BlogViewHolder(view)
+    private var loading = false
+    private val visibleThreshold = 2
+    private var onLoadMoreListener: OnLoadMoreListener? = null
+    private var lastVisibleItem = 0
+    private var totalItemCount = 0
+
+    companion object {
+        const val VIEW_ITEM: Int = 0;
+        const val VIEW_PROGRESS: Int = 1;
     }
 
-    override fun onBindViewHolder(viewHolder: BlogViewHolder, position: Int) {
-        val post = blogList[position]
-        if (!post.user.isNullOrEmpty()) {
-            //Username
-            viewHolder.tvUserName.text = "${post.user[0]?.name} ${post.user[0]?.lastname}"
-            //Designation
-            viewHolder.tvDesignation.text = "${post.user[0]?.designation}"
-            //Profile Pic
-            Glide.with(activity).load("${post.user[0]?.avatar}").placeholder(R.mipmap.ic_launcher)
-                .into(viewHolder.imgProfile);
+    init {
+        if (recyclerView.layoutManager is LinearLayoutManager) {
+            val linearLayoutManager = recyclerView
+                .layoutManager as LinearLayoutManager?
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(
+                    recyclerView: RecyclerView,
+                    dx: Int, dy: Int
+                ) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    totalItemCount = linearLayoutManager!!.itemCount
+                    lastVisibleItem = linearLayoutManager
+                        .findLastVisibleItemPosition()
+                    if (!loading
+                        && totalItemCount <= lastVisibleItem + visibleThreshold
+                    ) {
+                        onLoadMoreListener?.onLoadMore()
+                        loading = true
+                    }
+                }
+            })
         }
+    }
 
-        if (!post.media.isNullOrEmpty()) {
-            //Media Image
-            if (!post.media[0]?.image.isNullOrBlank()) {
-                Glide.with(activity).load("${post.media[0]?.image}")
-                    .into(viewHolder.imgArticleImage);
-            } else {
-                viewHolder.imgProfile.visibility = View.GONE
+    fun setLoaded() {
+        loading = false
+    }
+
+    fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener?) {
+        this.onLoadMoreListener = onLoadMoreListener
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_ITEM) {
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.fragment_blog_item, parent, false)
+            BlogViewHolder(view)
+        } else {
+            val view: View = LayoutInflater.from(parent.context).inflate(
+                R.layout.item_progress, parent, false
+            )
+            ProgressViewHolder(view)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is BlogViewHolder) {
+            val post = blogList[position]
+            if (post != null && !post.user.isNullOrEmpty()) {
+                //Username
+                holder.tvUserName.text = "${post.user[0]?.name} ${post.user[0]?.lastname}"
+                //Designation
+                holder.tvDesignation.text = "${post.user[0]?.designation}"
+                //Profile Pic
+                Glide.with(activity).load("${post.user[0]?.avatar}")
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(holder.imgProfile);
             }
 
-            //Title
-            if (!post.media[0]?.title.isNullOrEmpty()) viewHolder.tvTitle.text = post.media[0]?.title
-            else viewHolder.tvTitle.visibility = View.GONE
+            if (post != null && !post.media.isNullOrEmpty()) {
+                //Media Image
+                if (!post.media[0]?.image.isNullOrBlank()) {
+                    Glide.with(activity).load("${post.media[0]?.image}")
+                        .into(holder.imgArticleImage);
+                } else {
+                    holder.imgProfile.visibility = View.GONE
+                }
 
-            //Url
-            if (!post.media[0]?.url.isNullOrEmpty()) viewHolder.tvUrl.text = post.media[0]?.url
-            else viewHolder.tvUrl.visibility = View.GONE
-        }
+                //Title
+                if (!post.media[0]?.title.isNullOrEmpty()) holder.tvTitle.text =
+                    post.media[0]?.title
+                else holder.tvTitle.visibility = View.GONE
 
-        //Content
-        if (!post.content.isNullOrEmpty()) viewHolder.tvContent.text = post.content
-        else viewHolder.tvContent.visibility = View.GONE
+                //Url
+                if (!post.media[0]?.url.isNullOrEmpty()) holder.tvUrl.text = post.media[0]?.url
+                else holder.tvUrl.visibility = View.GONE
+            }
 
-        //Comments
-        viewHolder.tvComments.text = post.comments.toString()
-        //Likes
-        viewHolder.tvLikes.text = post.likes.toString()
+            //Content
+            if (!post?.content.isNullOrEmpty()) holder.tvContent.text = post?.content
+            else holder.tvContent.visibility = View.GONE
+
+            //Comments
+            holder.tvComments.text = post?.comments.toString()
+            //Likes
+            holder.tvLikes.text = post?.likes.toString()
+        } else (holder as ProgressViewHolder).progressBar.isIndeterminate = true
 
     }
 
@@ -68,29 +127,25 @@ class BlogItemAdapter internal constructor(
         return blogList.size
     }
 
-    class BlogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvTitle: TextView
-        var tvUserName: TextView
-        var tvDesignation: TextView
-        var tvCreatedTime: TextView
-        var tvContent: TextView
-        var tvUrl: TextView
-        var tvLikes: TextView
-        var tvComments: TextView
-        var imgArticleImage: ImageView
-        var imgProfile: ImageView
+    override fun getItemViewType(position: Int): Int {
+        return if (blogList.get(position) != null) VIEW_ITEM else VIEW_PROGRESS
+    }
 
-        init {
-            this.tvTitle = itemView.findViewById(R.id.tvTitle)
-            this.tvUserName = itemView.findViewById(R.id.tvUserName)
-            this.tvDesignation = itemView.findViewById(R.id.tvDesignation)
-            this.tvCreatedTime = itemView.findViewById(R.id.tvCreatedTime)
-            this.tvContent = itemView.findViewById(R.id.tvContent)
-            this.tvUrl = itemView.findViewById(R.id.tvUrl)
-            this.tvLikes = itemView.findViewById(R.id.tvLikes)
-            this.tvComments = itemView.findViewById(R.id.tvComments)
-            this.imgProfile = itemView.findViewById(R.id.imgProfile)
-            this.imgArticleImage = itemView.findViewById(R.id.imgArticleImage)
-        }
+    class BlogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+        var tvUserName: TextView = itemView.findViewById(R.id.tvUserName)
+        var tvDesignation: TextView = itemView.findViewById(R.id.tvDesignation)
+        var tvCreatedTime: TextView = itemView.findViewById(R.id.tvCreatedTime)
+        var tvContent: TextView = itemView.findViewById(R.id.tvContent)
+        var tvUrl: TextView = itemView.findViewById(R.id.tvUrl)
+        var tvLikes: TextView = itemView.findViewById(R.id.tvLikes)
+        var tvComments: TextView = itemView.findViewById(R.id.tvComments)
+        var imgArticleImage: ImageView = itemView.findViewById(R.id.imgArticleImage)
+        var imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
+
+    }
+
+    class ProgressViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
     }
 }

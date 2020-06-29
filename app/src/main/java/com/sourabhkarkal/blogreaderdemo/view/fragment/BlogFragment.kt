@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sourabhkarkal.blogreaderdemo.R
 import com.sourabhkarkal.blogreaderdemo.model.BlogResponseDTO
+import com.sourabhkarkal.blogreaderdemo.utils.OnLoadMoreListener
 import com.sourabhkarkal.blogreaderdemo.view.MainActivity
 import com.sourabhkarkal.blogreaderdemo.view.adapter.BlogItemAdapter
 import com.sourabhkarkal.blogreaderdemo.viewmodel.BlogFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_blog.*
 
-class BlogFragment : Fragment()  {
+
+class BlogFragment : Fragment() {
 
     private var blogViewModel: BlogFragmentViewModel? = null
-    private var resultAppList = ArrayList<BlogResponseDTO>()
+    private var resultAppList = ArrayList<BlogResponseDTO?>()
     private lateinit var adapter: BlogItemAdapter
 
     override fun onCreateView(
@@ -34,18 +36,45 @@ class BlogFragment : Fragment()  {
 
         blogViewModel = ViewModelProviders.of(this).get(BlogFragmentViewModel::class.java)
         blogViewModel?.getDataResponse()?.observe(this, observerPostLiveData)
-        blogViewModel?.callAllApi(1, 10)
+        blogViewModel?.callAllApi(page, limit)
 
-        adapter = BlogItemAdapter(resultAppList, activity as MainActivity);
         blogList.setHasFixedSize(true)
         blogList.layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
+        adapter = BlogItemAdapter(resultAppList, activity as MainActivity, blogList);
         blogList.adapter = adapter
+
+        (blogList.adapter as BlogItemAdapter).setOnLoadMoreListener(object : OnLoadMoreListener {
+            override fun onLoadMore() {
+                resultAppList.add(null)
+                (blogList.adapter as BlogItemAdapter).notifyItemInserted(resultAppList.size - 1)
+                page++;
+                blogViewModel?.callAllApi(page, limit)
+            }
+        })
     }
 
     private val observerPostLiveData = Observer<List<BlogResponseDTO>> { result ->
-        resultAppList.addAll(result as ArrayList<BlogResponseDTO>)
-        blogList.adapter?.notifyDataSetChanged()
+        if (page > 1 && resultAppList.isNotEmpty()) {
+            resultAppList.removeAt(resultAppList.size - 1)
+            blogList.adapter?.notifyItemRemoved(resultAppList.size)
+        }
+        if (result.isNotEmpty()) {
+            resultAppList.addAll(result as ArrayList<BlogResponseDTO>)
+            blogList.adapter?.notifyItemInserted(resultAppList.size - 1)
+        }
+        (blogList.adapter as BlogItemAdapter).setLoaded()
     }
 
+    companion object {
+        var loading: Boolean = false
+        const val limit: Int = 10
+        var page: Int = 1
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        page = 1
+    }
 
 }
