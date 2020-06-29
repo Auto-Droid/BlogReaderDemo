@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@android:color/white">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/ic_launcher"
+        app:civ_border_color="#000000"
+        app:civ_border_width=".5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        tools:ignore="MissingConstraints"
+        app:layout_editor_absoluteX="10dp"
+        app:layout_editor_absoluteY="5dp" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@+id/imgProfile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_editor_absoluteY="16dp"
+        tools:text="UserName" />
+
+    <TextView
+        android:id="@+id/tvDesignation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="@dimen/topMargin"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@+id/imgProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+        tools:text="Designation" />
+
+    <TextView
+        android:id="@+id/tvCreatedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10 min" />
+
+
+    <ImageView
+        android:id="@+id/imgArticleImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/topMargin"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/topMargin"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/imgArticleImage"
+        app:layout_editor_absoluteX="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        tools:text="Content" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/topMargin"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tvContent"
+        app:layout_editor_absoluteX="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        tools:text="Title" />
+
+    <TextView
+        android:id="@+id/tvUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/topMargin"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        app:layout_editor_absoluteX="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        tools:text="Url" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tvUrl"
+        app:layout_editor_absoluteX="10dp"
+        tools:text="10 Likes" />
+
+    <TextView
+        android:id="@+id/tvComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUrl"
+        android:layout_marginEnd="10dp"
+        tools:text="10 Likes" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
