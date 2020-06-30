@@ -34,5 +34,7 @@ ext {
     retrofit = '2.5.0'
     androidArchLib = '1.1.0'
     archRoomVersion = "2.0.0"
+    powerMock = "2.0.5"
+    powermockjunit4 = "2.0.5"
 
 }

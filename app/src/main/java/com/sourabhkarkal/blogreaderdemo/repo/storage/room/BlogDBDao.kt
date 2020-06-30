@@ -10,7 +10,7 @@ import io.reactivex.Single
 @Dao
 interface BlogDBDao {
 
-    @Query("SELECT * FROM blog_table")
+    @Query("SELECT * FROM blog_table ORDER BY id ASC")
     fun loadAllArticle(): Single<List<BlogResponseDTO>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

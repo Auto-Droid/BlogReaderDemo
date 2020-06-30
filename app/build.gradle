@@ -58,4 +58,8 @@ dependencies {
     api "androidx.room:room-rxjava2:$rootProject.archRoomVersion"
     kapt "androidx.room:room-compiler:$rootProject.archRoomVersion"
 
+    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.powerMock"
+    testImplementation "org.powermock:powermock-module-junit4:$rootProject.powerMock"
+    testImplementation "org.powermock:powermock-module-junit4-rule:$rootProject.powermockjunit4"
+
 }
