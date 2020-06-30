@@ -6,10 +6,10 @@ when app is offline and its has previously stored data it will display that else
 MVVM
 
 ## Components Used
-Dagger
-RxJava
-Retrofit
-LiveData
+Dagger<br />
+RxJava<br />
+Retrofit<br />
+LiveData<br />
 ViewModel
 
 ## Local Database Used
