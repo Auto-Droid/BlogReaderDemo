@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sourabhkarkal.blogreaderdemo.R
 import com.sourabhkarkal.blogreaderdemo.model.BlogResponseDTO
-import com.sourabhkarkal.blogreaderdemo.utils.FormatterUtils.Companion.formatDate
-import com.sourabhkarkal.blogreaderdemo.utils.FormatterUtils.Companion.formatValue
+import com.sourabhkarkal.blogreaderdemo.utils.Utils.Companion.formatDate
+import com.sourabhkarkal.blogreaderdemo.utils.Utils.Companion.formatValue
 import com.sourabhkarkal.blogreaderdemo.utils.OnLoadMoreListener
 
 
@@ -60,6 +60,10 @@ class BlogItemAdapter internal constructor(
 
     fun setLoaded() {
         loading = false
+    }
+
+    fun cancelLoading() {
+        loading = true
     }
 
     fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener?) {

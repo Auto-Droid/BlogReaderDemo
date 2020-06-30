@@ -37,6 +37,7 @@ class BlogFragment : Fragment() {
 
         blogViewModel = ViewModelProviders.of(this).get(BlogFragmentViewModel::class.java)
         blogViewModel?.getDataResponse()?.observe(this, observerPostLiveData)
+        blogViewModel?.getNetworkStatusResponse()?.observe(this, observerNetworkStatusLiveData)
         blogViewModel?.callAllApi(page, limit)
 
         blogList.setHasFixedSize(true)
@@ -64,6 +65,12 @@ class BlogFragment : Fragment() {
             blogList.adapter?.notifyItemInserted(resultAppList.size - 1)
         }
         (blogList.adapter as BlogItemAdapter).setLoaded()
+    }
+
+    private val observerNetworkStatusLiveData = Observer<Boolean> {
+        if(it) {
+            (blogList.adapter as BlogItemAdapter).cancelLoading()
+        }
     }
 
     companion object {
