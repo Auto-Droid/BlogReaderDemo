@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sourabhkarkal.blogreaderdemo.R
 import com.sourabhkarkal.blogreaderdemo.model.BlogResponseDTO
+import com.sourabhkarkal.blogreaderdemo.utils.FormatterUtils.Companion.formatDate
 import com.sourabhkarkal.blogreaderdemo.utils.FormatterUtils.Companion.formatValue
 import com.sourabhkarkal.blogreaderdemo.utils.OnLoadMoreListener
 
@@ -120,6 +121,10 @@ class BlogItemAdapter internal constructor(
             holder.tvComments.text = post?.comments?.toDouble()?.let { "${formatValue(it)} Comments" }
             //Likes
             holder.tvLikes.text = post?.likes?.toDouble()?.let { "${formatValue(it)} Likes" }
+
+            //Date
+            holder.tvCreatedTime.text = post?.createdAt?.let { formatDate(it) }
+
         } else (holder as ProgressViewHolder).progressBar.isIndeterminate = true
 
     }
@@ -129,7 +134,7 @@ class BlogItemAdapter internal constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (blogList.get(position) != null) VIEW_ITEM else VIEW_PROGRESS
+        return if (blogList[position] != null) VIEW_ITEM else VIEW_PROGRESS
     }
 
     class BlogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
