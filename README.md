@@ -15,6 +15,9 @@ ViewModel
 ## Local Database Used
 Room
 
+## Unit Testing
+Powermock and JUnit
+
 ## External Lib used
 **Image Loading** : https://github.com/bumptech/glide
 <br />
