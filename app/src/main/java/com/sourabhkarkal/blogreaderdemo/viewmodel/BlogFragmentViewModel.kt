@@ -45,7 +45,7 @@ class BlogFragmentViewModel : ViewModel {
 
 
     fun callAllApi(page: Int, limit: Int) {
-        if(Utils.isNetworkAvailable(ContextProvider.contextProvider?.provideContext()!!)) {
+        if(Utils.isNetworkAvailable(ContextProvider.provideContext()!!)) {
             // Online Loading
             compositeDisposable.add(blogSubscriber.getBlogData("$page", "$limit")
                 .subscribeOn(scheduler.newThread())

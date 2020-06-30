@@ -22,12 +22,12 @@ class BlogApplication : Application() {
             .networkComponent(DaggerNetworkComponent.builder().build())
             .build()
 
-        ContextProvider.contextProvider?.setApplicationContext(this)
+        ContextProvider.setApplicationContext(this)
     }
 
     override fun onTerminate() {
         super.onTerminate()
-        ContextProvider.contextProvider?.destroyContext()
+        ContextProvider.destroyContext()
     }
 
 }
