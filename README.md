@@ -17,5 +17,6 @@ Room
 
 ## External Lib used
 **Image Loading** : https://github.com/bumptech/glide
+<br />
 **Circular ImageView** : https://github.com/hdodenhof/CircleImageView
 
