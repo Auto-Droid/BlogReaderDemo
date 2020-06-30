@@ -33,5 +33,6 @@ ext {
     rxAndroid = '2.1.0'
     retrofit = '2.5.0'
     androidArchLib = '1.1.0'
+    archRoomVersion = "2.0.0"
 
 }

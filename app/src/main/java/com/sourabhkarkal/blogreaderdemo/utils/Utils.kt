@@ -1,5 +1,7 @@
 package com.sourabhkarkal.blogreaderdemo.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -7,10 +9,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-class FormatterUtils {
+
+class Utils {
 
     companion object {
-
+        //Used for Likes and Comments
         fun formatValue(value: Double): String? {
             var value = value
             val power: Int
@@ -27,6 +30,7 @@ class FormatterUtils {
             ) else formattedNumber
         }
 
+        // Used to show Created Date
         fun formatDate(date: String) : String {
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", Locale.ENGLISH)
             val currentDate = Calendar.getInstance().time
@@ -47,5 +51,13 @@ class FormatterUtils {
             }
         }
 
+        // Used to check network
+        fun isNetworkAvailable(context: Context) : Boolean {
+            val cm =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork = cm.activeNetworkInfo
+            return activeNetwork != null && (activeNetwork.type == ConnectivityManager.TYPE_WIFI
+                    || activeNetwork.type == ConnectivityManager.TYPE_MOBILE)
+        }
     }
 }

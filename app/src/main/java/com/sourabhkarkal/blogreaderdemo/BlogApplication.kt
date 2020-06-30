@@ -1,10 +1,12 @@
 package com.sourabhkarkal.blogreaderdemo
 
 import android.app.Application
+import android.content.Context
 import com.sourabhkarkal.blogreaderdemo.di.BlogReaderComponent
 import com.sourabhkarkal.blogreaderdemo.di.DaggerBlogReaderComponent
 import com.sourabhkarkal.blogreaderdemo.di.api.BlogSubscriberModule
 import com.sourabhkarkal.blogreaderdemo.di.network.DaggerNetworkComponent
+import com.sourabhkarkal.blogreaderdemo.utils.ContextProvider
 
 class BlogApplication : Application() {
 
@@ -16,9 +18,16 @@ class BlogApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerBlogReaderComponent.builder()
-            .blogSubscriberModule(BlogSubscriberModule())
+            .blogSubscriberModule(BlogSubscriberModule(this))
             .networkComponent(DaggerNetworkComponent.builder().build())
             .build()
+
+        ContextProvider.contextProvider?.setApplicationContext(this)
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        ContextProvider.contextProvider?.destroyContext()
     }
 
 }

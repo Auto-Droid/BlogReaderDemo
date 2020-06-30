@@ -5,6 +5,7 @@ import com.sourabhkarkal.blogreaderdemo.di.network.NetworkComponent
 import com.sourabhkarkal.blogreaderdemo.scheduler.Scheduler
 import com.sourabhkarkal.blogreaderdemo.di.scope.AppScope
 import com.sourabhkarkal.blogreaderdemo.repo.BlogApiCall
+import com.sourabhkarkal.blogreaderdemo.repo.storage.BlogDaoRepo
 import com.sourabhkarkal.blogreaderdemo.viewmodel.BlogFragmentViewModel
 import dagger.Component
 
@@ -14,6 +15,7 @@ interface BlogReaderComponent {
 
     fun scheduler(): Scheduler?
     fun blogApiCall(): BlogApiCall?
+    fun blogDaoRepo(): BlogDaoRepo?
 
     fun inject(blogViewModel: BlogFragmentViewModel)
     
