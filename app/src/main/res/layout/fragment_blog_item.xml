@@ -60,6 +60,7 @@
         android:layout_height="150dp"
         android:layout_marginTop="@dimen/topMargin"
         android:src="@mipmap/ic_launcher"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
@@ -86,6 +87,7 @@
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@+id/tvContent"
         app:layout_editor_absoluteX="10dp"
+        android:visibility="gone"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         tools:text="Title" />
@@ -98,6 +100,7 @@
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         app:layout_editor_absoluteX="10dp"
+        android:visibility="gone"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:autoLink="web"

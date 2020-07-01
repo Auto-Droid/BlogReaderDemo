@@ -98,23 +98,33 @@ class BlogItemAdapter internal constructor(
                     .into(holder.imgProfile);
             }
 
-            if (post != null && !post.media.isNullOrEmpty()) {
+            if (post?.media != null && post.media.isNotEmpty()) {
                 //Media Image
                 if (!post.media[0]?.image.isNullOrBlank()) {
                     Glide.with(activity).load("${post.media[0]?.image}")
                         .into(holder.imgArticleImage);
+                    holder.imgArticleImage.visibility = View.VISIBLE
                 } else {
-                    holder.imgProfile.visibility = View.GONE
+                    holder.imgArticleImage.visibility = View.GONE
                 }
 
                 //Title
-                if (!post.media[0]?.title.isNullOrEmpty()) holder.tvTitle.text =
-                    post.media[0]?.title
+                if (!post.media[0]?.title.isNullOrEmpty()) {
+                    holder.tvTitle.text =
+                        post.media[0]?.title
+                    holder.tvTitle.visibility = View.VISIBLE
+                }
                 else holder.tvTitle.visibility = View.GONE
 
                 //Url
-                if (!post.media[0]?.url.isNullOrEmpty()) holder.tvUrl.text = post.media[0]?.url
-                else holder.tvUrl.visibility = View.GONE
+                if (!post.media[0]?.url.isNullOrEmpty()) {
+                    holder.tvUrl.text = post.media[0]?.url
+                    holder.tvUrl.visibility = View.VISIBLE
+                } else holder.tvUrl.visibility = View.GONE
+            } else {
+                holder.imgArticleImage.visibility = View.GONE
+                holder.tvTitle.visibility = View.GONE
+                holder.tvUrl.visibility = View.GONE
             }
 
             //Content
